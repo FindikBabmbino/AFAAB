@@ -34,6 +34,7 @@ public class CombatState : StatePattern
 
     public override void EnterState(FiniteStateMachine finiteState)
     {
+        Debug.Log("In chase");
         player=GameObject.FindGameObjectWithTag("Player");
         needsAgent=true;
 
@@ -71,7 +72,7 @@ public class CombatState : StatePattern
         //First we check if it needs an agent if not it returns back
         if(!needsAgent)
         {
-            Debug.Log("Does not need an agent");
+            //Debug.Log("Does not need an agent");
             return;
         }
         agent=parentAgent;
@@ -84,13 +85,16 @@ public class CombatState : StatePattern
         if(!inMovingToPlayerState&&!inBlockingState&&!inEscapeState&&!inDodgeState)
         {
             //Lets try max wıth 5 rather then 10
-            agressionRandom=Random.Range(0.0f,5.0f);
+            //If you do five it does not work rather then doing that just change the enterence minimum
+            agressionRandom=Random.Range(0.0f,10.0f);
         }
         //Then we multiply it with the rate giving a higher chance to go into this state or a lower chance of going into it.
         agressionRandom*=agressionRate;
         //If the random num is equal or higher then the minimum threshold it goes into the state.
         if(agressionRandom>=5)
         {
+            //Reset destination before setting it again to clear up the old one.
+            agent.ResetPath();
             Debug.Log("In follow");
             //we set this to true so it does not get interrupted
             inMovingToPlayerState=true;
@@ -102,29 +106,35 @@ public class CombatState : StatePattern
             //OR rather then getting rondom num get agent.stoppingDistance
             if(direction.magnitude<=Random.Range(1,5))
             {
+                Debug.Log("Out of follow");
                 inMovingToPlayerState=false;
-                //Reset destination
                 //We might not need isstopped I WOULD KNEW IF MY COMPUTER DID NOT EXPLODE
-                agent.isStopped=true;
-                agent.ResetPath();           
             }
         }
     }
 
     private void EscapeState()
     {
+        //If the distance is too high don't go into the escape state.
+        if(direction.magnitude>=7)
+        {
+            Debug.Log("returned out of escape");
+            return;
+        }
         //Escape states is not really eascape but it is more of a retreat
         //Calculation for the direction vector
         Vector3 retreatDirection=agent.transform.position-player.transform.position;
         //If one of these are true we want to stop calculating the random number so it does not interrupt the current playing state.
         if(!inMovingToPlayerState&&!inBlockingState&&!inEscapeState&&!inDodgeState)
         {
-            escapeRandom=Random.Range(0.0f,5.0f);
+            escapeRandom=Random.Range(0.0f,10.0f);
         }
         //Then we multiply it with the rate giving a higher chance to go into this state or a lower chance of going into it.
         escapeRandom*=escapeRate;
-        if(escapeRandom>=5)
+        if(escapeRandom>=8)
         {
+            //Reset destination before setting it again to clear up the old one.
+            agent.ResetPath();
             Debug.Log("in retreat");
             //We set this to true so we don't get interrupted by other states
             inEscapeState=true;
@@ -139,9 +149,6 @@ public class CombatState : StatePattern
             {
                 Debug.Log("Out of escape");
                 inEscapeState=false;
-                //Reset destination
-                agent.isStopped=true;
-                agent.ResetPath();
             }
         }
     }
