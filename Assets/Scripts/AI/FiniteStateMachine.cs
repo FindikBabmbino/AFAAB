@@ -11,6 +11,11 @@ public class FiniteStateMachine : MonoBehaviour
     //We have to instantiate every state we wrote
     public StatePattern idleState=new GenericIdle();
     public StatePattern combatState=new CombatState();
+    public StatePattern civillianIdleState=new CivillianIdle();
+
+    [Header("Variables")]
+    //This will be checked if it is an enemy if not it will default to the civillian idle.
+    [SerializeField] private bool isEnemy;
 
     [SerializeField] private NavMeshAgent agent;
 
@@ -22,7 +27,15 @@ public class FiniteStateMachine : MonoBehaviour
     private void Start()
     {
         //Start state of the state machine
-        currentState=idleState;
+        //Check if it is an enemy if it is default to the enemy idle if not default to the civillian idle.
+        if(isEnemy)
+        {
+            currentState=idleState;   
+        }
+        else
+        {
+            currentState=civillianIdleState;
+        }
         currentState.EnterState(this);
         currentState.SetNavMeshAgent(agent);
     }
