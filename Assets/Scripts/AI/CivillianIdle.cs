@@ -11,8 +11,6 @@ public class CivillianIdle : StatePattern
     private bool needsAgent;
     //This will contain every waypoint in the map
     private List<GameObject> wayPoints=new List<GameObject>();
-    //This will be used to check if the ai has passed the waypoints
-    private List<bool> passedWayPoints=new List<bool>();
 
     private GameObject currentWaypoint;
 
@@ -21,7 +19,6 @@ public class CivillianIdle : StatePattern
         needsAgent=true;
         //Get all the waypoints and store them here
         PopulateWaypointList();
-        //passedWayPoints.AddRange(wayPoints.Count);
     }
 
     public override void UpdateState(FiniteStateMachine finiteState)

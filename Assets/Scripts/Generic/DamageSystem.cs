@@ -52,5 +52,13 @@ public class DamageSystem : MonoBehaviour
         {
             other.gameObject.GetComponent<FlySystem>().DecreaseFlyAmount(flyEnergyToDecrease);
         }
+
+        //Do damage to the target
+        //First check if they have a health component
+        if(other.GetComponent<HealthSystem>())
+        {
+            //Call the damage function and pass in the damage value 
+            other.gameObject.GetComponent<HealthSystem>().TakeDamage(damage);
+        }
     }    
 }
