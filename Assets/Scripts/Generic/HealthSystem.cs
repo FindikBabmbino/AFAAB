@@ -21,6 +21,9 @@ public class HealthSystem : MonoBehaviour
         {
             CombatEventSystemManager.instance.RemoveEnemiesFromTheList(this.gameObject);
         }
+
+        //fraction of both the values gives us the desired amount since it is 0 to 1
+        UIManager.instance.ModifyHealthAmount(currentHealth/MaxHealth);
     }
 
     public void TakeDamage(float damageAmount)
