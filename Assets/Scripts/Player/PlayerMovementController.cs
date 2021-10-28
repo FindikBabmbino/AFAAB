@@ -62,7 +62,7 @@ public class PlayerMovementController : MonoBehaviour
     void FixedUpdate()
     {
         //Does the calculation for the players movement
-         PlayerMovementCalculation();
+        PlayerMovementCalculation();
     }
 
     void PlayerMovementCalculation()

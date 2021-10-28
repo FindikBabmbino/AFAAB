@@ -13,48 +13,86 @@ public class DashSystem : MonoBehaviour
     [SerializeField]private ParticleSystem dashVFX;
     [Header("Misc")]
     [SerializeField]private PlayerInput playerInput;
-    [SerializeField] private Transform cameraTransform;
+    [SerializeField]private Transform cameraTransform;
+    [SerializeField]private bool isEnemy;
     private Rigidbody rigidBody;
     private bool isDashing;
+
+    [SerializeField]private float dashCoolDownAmount;
+    //This will hold the dashlimit so we can then set the dashlimit again to replenish it
+    private float waitForDashReplenish;
+
+    private int defaultDashAmount;
 
      private void Start()
      {
         playerInput=GetComponent<PlayerInput>();
         rigidBody=GetComponent<Rigidbody>();
         cameraTransform=Camera.main.transform;
+        defaultDashAmount=dashLimit;
      }
 
 
     private void OnEnable()
     {
-        playerInput.actions["Dash"].performed+=DashCoroutineStarter;
+        //Only bind if it is the player if we don't do this check we get errors let's try to avoid them as much as we can
+        if(!isEnemy)
+        {
+            playerInput.actions["Dash"].performed+=DashCoroutineStarter;
+        }
     }
     private void OnDisable()
     {
-      playerInput.actions["Dash"].performed-=DashCoroutineStarter;
+        if(!isEnemy)
+        {
+            playerInput.actions["Dash"].performed-=DashCoroutineStarter;
+        }
     }
 
-     private void DashCoroutineStarter(InputAction.CallbackContext context)
+    private void Update()
+    {   //If it is zero or is dashing is false we start the replenish process
+        if(dashLimit<=0||!isDashing)
+        {
+            if(waitForDashReplenish<dashCoolDownAmount)
+            {
+                //We start the countdown
+                waitForDashReplenish+=Time.deltaTime;
+                if(waitForDashReplenish>=dashCoolDownAmount)
+                {
+                    dashLimit=defaultDashAmount;
+                    //Set it to zero so that it stops counting
+                    waitForDashReplenish=0;
+                }
+                else if (isDashing)
+                {
+                    //If player dashes again cancel the process by setting it to zero
+                    waitForDashReplenish=0;
+                }
+            }
+        }
+    }
+    private void DashCoroutineStarter(InputAction.CallbackContext context)
     {
         StartCoroutine(DashCoroutine());
     }
 
+    //Investigate transform.translate more it could be better then rb.addforce
     private IEnumerator DashCoroutine()
     {
          //DONE--TODO also use isdashing to make the character unable to be controlled by WASD--DONE
-         //TODO decrease dashlimit after use and make a function that will regenerate it.
+         //TODO decrease dashlimit after use and make a function that will regenerate it-DONE.
 
         //We don't want the player to be able to dash if they are not in combat
         if(!CombatEventSystemManager.instance.GetPlayerIsInBattle())
         {
             yield break;
         }
-        isDashing=true;  
-         //If the limit is maxed out just return out of it 
+        //If the limit is maxed out just return out of it 
         if(dashLimit<=0)
         {
             yield break;
         }
+        isDashing=true;  
         //Check if these are null so we dont crash the game
         if(dashVFX!=null)
         {
@@ -73,15 +111,32 @@ public class DashSystem : MonoBehaviour
             //If it is we set the players forward as the direction 
             DashDirection=transform.forward;
         }
-        rigidBody.AddForce(DashDirection*dashPower,ForceMode.VelocityChange);
+        rigidBody.AddForce(DashDirection*dashPower*Time.deltaTime,ForceMode.VelocityChange);
         rigidBody.velocity=Vector3.zero;
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(1.0f);
         yield return null;
         isDashing=false;
+        dashLimit--;
     }
     //This will be called from the player controller to check if the player is using dash
     public bool GetIsDashing()
     {
         return isDashing;
+    }
+
+    //This will be called from the enemy combat ai to make the ai dash but the problem is that the ai can only dash to right we have to make him be able to dash to other directions as well
+    //Or we can seperate all of them and call them depending on the state (e.g AIDashrigh AIDashLeft) so on and so forth
+    public IEnumerator AIDash()
+    {
+        if(dashLimit<=0)
+        {
+            yield break;
+        }
+        isDashing=true;
+        Vector3 DashDirection=transform.right;
+        rigidBody.AddForce(DashDirection*dashPower*Time.deltaTime,ForceMode.VelocityChange);
+        rigidBody.velocity=Vector3.zero;
+        yield return null;
+        dashLimit--;
     }
 }

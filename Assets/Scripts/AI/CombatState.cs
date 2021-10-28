@@ -32,6 +32,9 @@ public class CombatState : StatePattern
     private bool inEscapeState;
     private bool inDodgeState;
 
+
+
+    //Going for random number state choosing might have been a bad idea I have to think of a better one.
     public override void EnterState(FiniteStateMachine finiteState)
     {
         Debug.Log("In chase");
@@ -57,6 +60,7 @@ public class CombatState : StatePattern
         MoveToPlayerState();
         //This makes the ai retreat
         EscapeState();
+        DodgeState();
     }
 
     public override void ExitState(FiniteStateMachine finite)
@@ -150,6 +154,27 @@ public class CombatState : StatePattern
                 Debug.Log("Out of escape");
                 inEscapeState=false;
             }
+        }
+    }
+
+
+    //Maybe add if player is attacking here as well so they only dodge when you attack
+    private void DodgeState()
+    {
+         //If one of these are true we want to stop calculating the random number so it does not interrupt the current playing state.
+        if(!inMovingToPlayerState&&!inBlockingState&&!inEscapeState&&!inDodgeState)
+        {
+            dodgeRandom=Random.Range(0.0f,10.0f);
+        }
+        dodgeRandom*=dodgeRate;
+        //Check if they have the dashsystem if not don't dash
+        if(dodgeRandom>=5&&agent.gameObject.GetComponent<DashSystem>())
+        {
+            Debug.Log("In dash");
+            Debug.Log(inDodgeState);
+            inDodgeState=true;
+            agent.gameObject.GetComponent<DashSystem>().StartCoroutine(agent.gameObject.GetComponent<DashSystem>().AIDash());
+            inDodgeState=false;
         }
     }
 }
