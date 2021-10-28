@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: MotionBlur
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
     m_Value: 2
@@ -73,6 +74,7 @@ MonoBehaviour:
   m_Name: Bloom
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
     m_Value: 2
@@ -128,9 +130,10 @@ MonoBehaviour:
   m_Name: HDRISky
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   rotation:
     m_OverrideState: 1
-    m_Value: 116
+    m_Value: 240.3
     min: 0
     max: 360
   skyIntensityMode:
@@ -138,7 +141,7 @@ MonoBehaviour:
     m_Value: 0
   exposure:
     m_OverrideState: 1
-    m_Value: 13.5
+    m_Value: 15
   multiplier:
     m_OverrideState: 0
     m_Value: 1
@@ -274,6 +277,7 @@ MonoBehaviour:
   m_Name: FilmGrain
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   type:
     m_OverrideState: 1
     m_Value: 0
@@ -303,12 +307,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   skyType:
     m_OverrideState: 1
     m_Value: 1
-  cloudType:
-    m_OverrideState: 0
-    m_Value: 0
   skyAmbientMode:
     m_OverrideState: 1
     m_Value: 1
@@ -328,6 +330,7 @@ MonoBehaviour:
   m_Name: ContactShadows
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
     m_Value: 2
@@ -393,6 +396,7 @@ MonoBehaviour:
   m_Name: Fog
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
     m_Value: 1
@@ -511,6 +515,7 @@ MonoBehaviour:
   m_Name: ScreenSpaceRefraction
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   screenFadeDistance:
     m_OverrideState: 1
     m_Value: 0.001
@@ -529,6 +534,7 @@ MonoBehaviour:
   m_Name: AmbientOcclusion
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   quality:
     m_OverrideState: 1
     m_Value: 2
@@ -624,6 +630,7 @@ MonoBehaviour:
   m_Name: Exposure
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   mode:
     m_OverrideState: 1
     m_Value: 4
@@ -641,10 +648,10 @@ MonoBehaviour:
     m_Value: 0
   limitMin:
     m_OverrideState: 1
-    m_Value: 5
+    m_Value: -2.141119
   limitMax:
     m_OverrideState: 1
-    m_Value: 13
+    m_Value: 12.956203
   curveMap:
     m_OverrideState: 0
     m_Value:
@@ -739,7 +746,7 @@ MonoBehaviour:
     m_Value: {fileID: 0}
   histogramPercentages:
     m_OverrideState: 1
-    m_Value: {x: 10, y: 90}
+    m_Value: {x: 20, y: 100}
     min: 0
     max: 100
   histogramUseCurveRemapping:
@@ -780,6 +787,7 @@ MonoBehaviour:
   m_Name: Tonemapping
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   mode:
     m_OverrideState: 1
     m_Value: 2
@@ -832,6 +840,7 @@ MonoBehaviour:
   m_Name: HDShadowSettings
   m_EditorClassIdentifier: 
   active: 1
+  m_AdvancedMode: 0
   maxShadowDistance:
     m_OverrideState: 1
     m_Value: 70
