@@ -16,7 +16,7 @@ public class DashSystem : MonoBehaviour
     [SerializeField]private Transform cameraTransform;
     [SerializeField]private bool isEnemy;
     private Rigidbody rigidBody;
-    private bool isDashing;
+    [SerializeField]private bool isDashing;
 
     [SerializeField]private float dashCoolDownAmount;
     //This will hold the dashlimit so we can then set the dashlimit again to replenish it
@@ -104,16 +104,19 @@ public class DashSystem : MonoBehaviour
             AudioSource.PlayClipAtPoint(dashSfx,transform.position);
         }
         //Get it in a variable to check if the x and z are 0
-        Vector3 DashDirection=GetComponent<PlayerMovementController>().GetDashDirection();
+        Vector3 dashDirection=GetComponent<PlayerMovementController>().GetDashDirection();
         //We check if the x and z are 0
-        if(DashDirection.x==0&&DashDirection.z==0)
+        if(dashDirection.x==0&&dashDirection.z==0)
         {
             //If it is we set the players forward as the direction 
-            DashDirection=transform.forward;
+            dashDirection=transform.forward;
         }
-        rigidBody.AddForce(DashDirection*dashPower*Time.deltaTime,ForceMode.VelocityChange);
-        rigidBody.velocity=Vector3.zero;
-        yield return new WaitForSeconds(1.0f);
+        //Rigidbody.moveposition seems to be better then addforce but i will comment this out if we ever want to go back.
+        //rigidBody.AddForce(dashDirection*dashPower*Time.deltaTime,ForceMode.VelocityChange);
+        rigidBody.MovePosition(transform.position+(dashDirection.normalized*dashPower*Time.deltaTime));
+        //Since we are now using moveposition we don't need this too
+        //rigidBody.velocity=Vector3.zero;
+        yield return new WaitForSeconds(0.5f);
         yield return null;
         isDashing=false;
         dashLimit--;
@@ -133,10 +136,10 @@ public class DashSystem : MonoBehaviour
             yield break;
         }
         isDashing=true;
-        Vector3 DashDirection=transform.right;
-        rigidBody.AddForce(DashDirection*dashPower*Time.deltaTime,ForceMode.VelocityChange);
-        rigidBody.velocity=Vector3.zero;
+        Vector3 dashDirection=transform.right;
+        rigidBody.MovePosition(transform.position+(dashDirection.normalized*dashPower*Time.deltaTime));
         yield return null;
+        isDashing=false;
         dashLimit--;
     }
 }
