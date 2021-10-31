@@ -54,7 +54,10 @@ public class MusicManager : MonoBehaviour
         {
             if(!CombatEventSystemManager.instance.GetPlayerIsInMission())
             {
-                ableToDecideMusic=true;
+                if(jukeBoxIntro.clip==null&&jukeBoxLoop.clip==null)
+                {
+                    ableToDecideMusic=true;
+                }
                 DecideMusicToPlay();
                 CombatMusicState();
             }
@@ -66,19 +69,19 @@ public class MusicManager : MonoBehaviour
     {
         if(ableToDecideMusic)
         {
-            if(overWorldIntro==null)
+            ableToDecideMusic=false;
+            if(overWorldIntro.Length!=0)
             {
                 randMusicToSelect=Random.Range(0,overWorldIntro.Length);
                 jukeBoxIntro.clip=overWorldIntro[randMusicToSelect];
                 jukeBoxIntro.Play();
             }
             //If this is null just pull from the loop
-            else
+            else if(overWorldLoop.Length!=0)
             {
                 randMusicToSelect=Random.Range(0,overWorldLoop.Length);
                 jukeBoxLoop.clip=overWorldLoop[randMusicToSelect]; 
             }
-            ableToDecideMusic=false;
         }
     }
 

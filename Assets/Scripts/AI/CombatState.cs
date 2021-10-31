@@ -61,6 +61,12 @@ public class CombatState : StatePattern
         //This makes the ai retreat
         EscapeState();
         DodgeState();
+
+        //This makes it revert back to the idle if the player somehow gets out of combat
+        if(!CombatEventSystemManager.instance.GetPlayerIsInBattle())
+        {
+            finiteState.SwitchState(finiteState.idleState);
+        }
     }
 
     public override void ExitState(FiniteStateMachine finite)
@@ -146,7 +152,8 @@ public class CombatState : StatePattern
             //Maybe don't do this has weird results
             //agressionRandom=0;
             agent.SetDestination(retreatDirection);
-            //We do a lookat so that the AI always looks at the player;
+            //We do a lookat so that the AI always looks at the player
+            //We might want to do something smoother in the future
             agent.transform.LookAt(player.transform);
             //Randomly selects the distance it is going to go
             if(direction.magnitude>=Random.Range(1,5))
