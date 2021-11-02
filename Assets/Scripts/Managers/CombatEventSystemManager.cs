@@ -7,7 +7,9 @@ public class CombatEventSystemManager : MonoBehaviour
     public static CombatEventSystemManager instance;
 
     //This bool will be turned true when Sarp enters combat thanks to this bool we will be able to make Sarp fight set up events and music
-    [SerializeField]private bool playerIsInBattle;
+    private bool playerIsInBattle;
+    //When the player is in a mission set this to true so that the music manager knows what to play.
+    private bool playerIsInMission;
 
     //List of enemies will be kept to determine when the playerIsInBattle should be set to false when an enemy is defeated they are subtracted from the list.
     [SerializeField] private List<GameObject> enemies=new List<GameObject>();
@@ -22,12 +24,12 @@ public class CombatEventSystemManager : MonoBehaviour
         {
             instance=this;
             //We want this to persist through the game
-            DontDestroyOnLoad(gameObject);
         }
         else if(instance!=this)
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
+        DontDestroyOnLoad(this);
     }
     private void Update()
     {
@@ -66,6 +68,16 @@ public class CombatEventSystemManager : MonoBehaviour
     public void SetIsInBattle(bool var)
     {
         playerIsInBattle=var;
+    }
+    //This will be called from the music manager to know if the player is in a mission but it will be called from somewhere else in the future as well
+    public bool GetPlayerIsInMission()
+    {
+        return playerIsInMission;
+    }
+    //When the player is entered a mission or finishes one this will be called from the mission manager.
+    public void SetIsPlayerInMission(bool var)
+    {
+        playerIsInMission=var;
     }
     //When this is initiated it will get all the enemies in the scene
     private void GetEnemiesInScene()
