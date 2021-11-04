@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {   public static UIManager instance;
     [SerializeField] private Image healthFillBar;
+    [SerializeField] private Image flyFillBar;
     //We might need it in the future
     [SerializeField] private GameObject player;
     //This is the amount of lerp the bar is going to do
@@ -40,6 +41,12 @@ public class UIManager : MonoBehaviour
     {
         //Lerps between the fillamount and the current health value.
         healthFillBar.fillAmount=Mathf.Lerp(healthFillBar.fillAmount,var,BarLerp());
+    }
+    //This calculates the fly bat
+    public void ModifyFlyAmount(float var)
+    {
+        //Lerps between the fillamount and the current health value.
+        flyFillBar.fillAmount=Mathf.Lerp(flyFillBar.fillAmount,var,BarLerp());
     }
 
     //This function makes it so that we lerp through the fill values
