@@ -69,7 +69,8 @@ public class PlayerMovementController : MonoBehaviour
     {
         //For some reason the calculation of the player movement direction and adding the force has to be on the same function if not it does not work.
         //If this returns true we wont let the player move.
-        if(GetComponent<DashSystem>().GetIsDashing())
+        //We also don't want the player to move if they are in a dialogue.
+        if(GetComponent<DashSystem>().GetIsDashing()||ChatterBoxManager.instance.ReturnPlayerIsInDialogue())
         {
             Debug.Log("called");
             return;

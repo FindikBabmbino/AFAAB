@@ -83,7 +83,8 @@ public class DashSystem : MonoBehaviour
          //TODO decrease dashlimit after use and make a function that will regenerate it-DONE.
 
         //We don't want the player to be able to dash if they are not in combat
-        if(!CombatEventSystemManager.instance.GetPlayerIsInBattle())
+        //We also don't want the player to be able to dash if they are in a dialogue if they are in a battle they most likely won't get into one but just to be sure we should still check.
+        if(!CombatEventSystemManager.instance.GetPlayerIsInBattle()||ChatterBoxManager.instance.ReturnPlayerIsInDialogue())
         {
             yield break;
         }
