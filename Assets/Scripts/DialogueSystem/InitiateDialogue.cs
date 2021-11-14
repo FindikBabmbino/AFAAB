@@ -35,20 +35,21 @@ public class InitiateDialogue : MonoBehaviour
 
     private void CallTriggerDialogue(int numOfList)
     {
+        //If the player is in a battle don't start a dialogue
+        if(CombatEventSystemManager.instance.GetPlayerIsInBattle())
+        {
+            return;
+        }
         if(!ChatterBoxManager.instance.ReturnPlayerIsInDialogue())
         {
              npcToTalkTo[numOfList].TriggerDialogue();
-        }
-        else
-        {
-            ChatterBoxManager.instance.DisplayNextSentence();
         }
     }
 
     //This will calculate the closest object that the player can talk to and you can talk to that guy person
     private void CalculateDistance(InputAction.CallbackContext context)
     {
-
+        Debug.Log("In calculate distance");
         foreach(var obj in npcToTalkTo)
         {
             //This i keeps track of which one of them it is then it is passed into call trigger dialogue.
@@ -57,10 +58,18 @@ public class InitiateDialogue : MonoBehaviour
             Vector3 distance=transform.position-obj.gameObject.transform.position;
             float distanceSqrd=distance.sqrMagnitude;
             //If the distance matches the min distance we call the call trigger dialogue.
-            if(distanceSqrd<=minDistanceToTalk)
+            if(distanceSqrd<=minDistanceToTalk&&!ChatterBoxManager.instance.ReturnPlayerIsInDialogue())
             {
+                minDistanceToTalk=distanceSqrd;
                 Debug.Log(i);
                 CallTriggerDialogue(i);
+            }
+            //If the player is already in a dialogue just continue the dialogue
+            //If there is a choice we don't want the player to press e 
+            if(ChatterBoxManager.instance.ReturnPlayerIsInDialogue()&&!UIManager.instance.ReturnisMakingAChoice())
+            {
+                Debug.Log("In else if check");
+                ChatterBoxManager.instance.ContinueStory();
             }
             //This is so that it does not crash the game if it finds nothing
             else

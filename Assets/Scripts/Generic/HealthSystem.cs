@@ -7,7 +7,7 @@ public class HealthSystem : MonoBehaviour
     [Header("Stats")]
     [SerializeField]private float MaxHealth=100.0f;
 
-    [SerializeField] private float currentHealth=0.0f;
+    [SerializeField]private float currentHealth=0.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +20,11 @@ public class HealthSystem : MonoBehaviour
         if(currentHealth<=0)
         {
             CombatEventSystemManager.instance.RemoveEnemiesFromTheList(this.gameObject);
+        }
+        //If the current health ever goes above maxhealth just reset it back to the max health
+        if(currentHealth>MaxHealth)
+        {
+            currentHealth=MaxHealth;
         }
 
         //fraction of both the values gives us the desired amount since it is 0 to 1
@@ -42,5 +47,15 @@ public class HealthSystem : MonoBehaviour
             return;
         }
         currentHealth+=healAmount;
+    }
+
+    //These will return the current and the max health
+    public float ReturnCurrentHealth()
+    {
+        return currentHealth;
+    }
+    public float ReturnMaxHealth()
+    {
+        return MaxHealth;
     }
 }

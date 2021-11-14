@@ -46,4 +46,14 @@ public class FlySystem : MonoBehaviour
     {
         return currentFlyMeter;
     }
+
+    //These will be called from the item generic
+    public float ReturnCurrentFlyEnergy()
+    {
+        return currentFlyMeter;
+    }
+    public float ReturnMaxFlyEnergy()
+    {
+        return maxFlyMeter;
+    }
 }

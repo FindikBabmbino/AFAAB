@@ -56,11 +56,11 @@ public class LockOnSystem : MonoBehaviour
             //Thıs for clamping the rotation of the x and z rotation
             Vector3 lockOnRotation=new Vector3(targetTransform.position.x,transform.position.y,targetTransform.position.z);
             //When we do look at the player starts orbiting the target
-             player.transform.LookAt(lockOnRotation);
-             //We switch to this mode so that the camera is locked to the players back
-             freeLookCamera.m_BindingMode=CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
-             //We close this script so that the player can't move the camera
-             freeLookCamera.GetComponent<CinemachineInputProvider>().enabled=false;
+            player.transform.LookAt(lockOnRotation);
+            //We switch to this mode so that the camera is locked to the players back
+            freeLookCamera.m_BindingMode=CinemachineTransposer.BindingMode.LockToTargetWithWorldUp;
+            //We close this script so that the player can't move the camera
+            //freeLookCamera.GetComponent<CinemachineInputProvider>().enabled=false;
         }
         else
         {

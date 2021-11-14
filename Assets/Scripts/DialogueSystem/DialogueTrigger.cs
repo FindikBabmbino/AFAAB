@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    //This is so we can access the variables inside it.
-    [SerializeField]private Dialogue dialogue;
     [SerializeField]private float dialogueSpeed=0;
+
+    //This holds the ink json that is specific to this character
+    [Header("Ink JSON")]
+    [SerializeField] private TextAsset inkJSON;
 
     //This will feed the information into the dialogue box.
     public void TriggerDialogue()
     {
-        ChatterBoxManager.instance.StartDialogue(dialogue,dialogueSpeed);
+        ChatterBoxManager.instance.StartDialogue(inkJSON,dialogueSpeed);
     }
 }

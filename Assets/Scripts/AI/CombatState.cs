@@ -32,7 +32,7 @@ public class CombatState : StatePattern
     private bool inEscapeState;
     private bool inDodgeState;
 
-
+    //TODO remove the random part of it rather then make it stages like he needs to get close to the player then punch him depending on what the player is doing or block or dodge
 
     //Going for random number state choosing might have been a bad idea I have to think of a better one.
     public override void EnterState(FiniteStateMachine finiteState)

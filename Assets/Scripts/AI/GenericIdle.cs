@@ -27,7 +27,7 @@ public class GenericIdle : StatePattern
         //We get the direction rather then the distance so we can calculate the angle of the player.
         Vector3 direction=player.transform.position-agent.transform.position;
         float angle=Vector3.Angle(direction,player.transform.forward);
-        if(direction.magnitude<=noticeRange&&angle<=noticeAngle)
+        if(direction.magnitude<=noticeRange&&angle<=noticeAngle&&!ChatterBoxManager.instance.ReturnPlayerIsInDialogue())
         {
             //Debug.Log("I see you");
             //do a vector.zero so we can reset the destination before setting it again.
@@ -47,7 +47,8 @@ public class GenericIdle : StatePattern
             noticeAngle=40.0f;
         }
         //If the direction magnitude is in the combat distance we change the state and call setisinbattle function from the singleton
-        if(direction.magnitude<=engageCombatDistance)
+        //We also don't want to start a fight if the player is in a battle
+        if(direction.magnitude<=engageCombatDistance&&!ChatterBoxManager.instance.ReturnPlayerIsInDialogue())
         {
             CombatEventSystemManager.instance.SetIsInBattle(true);
             //This will be enabled when we have the combat state and the setisinbattle will probably be moved there as well.
