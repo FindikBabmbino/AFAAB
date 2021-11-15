@@ -15,6 +15,7 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]private float rayCastReach=10.0f;
 
     [Header("Camera")]
+    //This weill not be referenced to the camera anymore it will be referenced to a gameobject that will follow the cameras yaw rotation
     [SerializeField]private Transform cameraTransform;
     private Vector3 moveDirection;
     //this will be used to calculate players slope normal
@@ -34,7 +35,6 @@ public class PlayerMovementController : MonoBehaviour
         //This sets the playerinput 
         playerInput = GetComponent<PlayerInput>();
         rigidBody=GetComponent<Rigidbody>();
-        cameraTransform=Camera.main.transform;
     }
 
     private void OnEnable()
@@ -82,11 +82,13 @@ public class PlayerMovementController : MonoBehaviour
             moveDirection=new Vector3(movementAxis.x,0,movementAxis.y);
             moveDirection=moveDirection.x*cameraTransform.transform.right+moveDirection.z*cameraTransform.transform.forward;
             //We do a check if it is not 0 this is done so it does not reset the players rotation when the character does not move
-            if(moveDirection.x!=0&&moveDirection.y!=0&&moveDirection.z!=0)
+            //This check used to be moveDirection.x!=0&&moveDirection.y!=0&&moveDirection.z!=0 this is because it was the cinemachibe camera before
+            if(moveDirection.x!=0&&moveDirection.z!=0)
             {
+                Debug.Log("in movedirection check");
                 //This makes the character look at the where they are going
                 //TODO-We clamp the x and z so the player does not rotate to weird angles
-                transform.rotation=Quaternion.LookRotation(moveDirection);
+                transform.localRotation=Quaternion.LookRotation(moveDirection);
             }
             //Set the y to be zero to be sure 
             moveDirection.y=0;
