@@ -144,6 +144,15 @@ public class UIManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
     }
 
+    //This will make it so that we can hide it when we are typing the letter
+    public void HideChoices()
+    {
+        foreach(GameObject choice in choices)
+        {
+            choice.SetActive(false);
+        }
+    }
+
     public bool ReturnisMakingAChoice()
     {
         return isMakingAChoice;

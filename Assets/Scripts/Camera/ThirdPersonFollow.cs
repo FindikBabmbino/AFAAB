@@ -11,12 +11,12 @@ public class ThirdPersonFollow : MonoBehaviour
     //This will hold the mouse sensitivity but we will probably move this to somewhere else in the future.
     [SerializeField]private float mouseSensitivity=1.0f;
     //This will hold the minumum and the maximum values the pitch of the camera will have
-    [SerializeField]Vector2 pitchMinMax=new Vector2(-90,90);
+    [SerializeField]private Vector2 pitchMinMax=new Vector2(-90,90);
     //This will give smooth rotation
-    [SerializeField]float rotationSmoothTime = 0.12f;
+    [SerializeField]private float rotationSmoothTime = 0.12f;
     //This will be the distance of the camera from the target
-    [SerializeField]float distanceOfTheCamera=10f;
-    //These will hold the smooth velocity and current rotation
+    [SerializeField]private float distanceOfTheCamera=10f;
+    //These will hold the reference smooth velocity and current rotation
     private Vector3 currentRotation;
     private Vector3 rotationSmoothVelocity;
     private PlayerInput playerInput;

@@ -21,10 +21,13 @@ public class ChatterBoxManager : MonoBehaviour
     private PlayerInput playerInput;
 
     //This float controlls the speed of text
-    private float textSpeed;
+    private float textSpeed=0;
 
     //This will be true when the typewritter coroutine starts
     public bool isWrittingText;
+
+    //This is will keep track if the button is pressed again if so it will skip writting the dialogue
+    private bool pressedAgain;
 
     //These const will hold the tags from ink
     private const string SPEAKER_TAG="speaker";
@@ -45,9 +48,20 @@ public class ChatterBoxManager : MonoBehaviour
         //This gets the player input
         playerInput=GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>();
     }
+
+    //Sub on enable
+    private void OnEnable()
+    {
+        playerInput.actions["SkipDialogue"].performed+=SetPressedAgain;
+    }
+    //Unsub on disable to avoid memory leak
+    private void OnDisable()
+    {
+        playerInput.actions["SkipDialogue"].performed-=SetPressedAgain;
+    }
     
     //This will be called from the dialogue trigger so we can display the dialogue
-    public void StartDialogue(TextAsset inkJSON,float textSpeed=0)
+    public void StartDialogue(TextAsset inkJSON,float textSpeed)
     {  
         //Set the story to this
         currentStory=new Story(inkJSON.text);
@@ -55,8 +69,6 @@ public class ChatterBoxManager : MonoBehaviour
         playerIsInDialogue=true;
         //When starting the dialogue we have to open the panel so we can see what is being displayed.
         UIManager.instance.OpenDialogueBox();
-        //Get the choices
-        UIManager.instance.DisplayChoices();
         //Check if the story can continue
         ContinueStory();
 
@@ -70,8 +82,6 @@ public class ChatterBoxManager : MonoBehaviour
             //Set the text to current story
             string texToHold=currentStory.Continue();
             StartCoroutine(TypeSentence(texToHold));
-            //Display choices if any for this dialogue line
-            UIManager.instance.DisplayChoices();
             //handle tags
             HandleTags(currentStory.currentTags);
         }
@@ -119,6 +129,8 @@ public class ChatterBoxManager : MonoBehaviour
          Debug.Log("in end dialogue");
         //Since we reached the end we need to set this to false
         playerIsInDialogue=false;
+        //Just to be safe set this to false again
+        isWrittingText=false;
         //Since the dialogue ends we want to call this function
         UIManager.instance.CloseDialogueBox();
         //Reset the text
@@ -127,20 +139,29 @@ public class ChatterBoxManager : MonoBehaviour
 
     //This will type out the letters in the chatterbox
     private IEnumerator TypeSentence(string sentence)
-    {
+    {  
+        UIManager.instance.HideChoices();
         isWrittingText=true;
         //Start out with a null text so we can type something in and is initiated
         chatterBoxText.text="";
         //This will loop through the string and get the letters
         foreach(char letter in sentence.ToCharArray())
         {
-            isWrittingText=true;
+            if(pressedAgain)
+            {
+                chatterBoxText.text=sentence;
+                pressedAgain=false;
+                break;
+            }
             chatterBoxText.text+=letter;
             //This controlls the speed of the text
             yield return new WaitForSeconds(textSpeed);
-            yield return null;
-            isWrittingText=false;
         }
+        isWrittingText=false;
+        pressedAgain=false;
+        UIManager.instance.DisplayChoices();
+        //Display choices if any for this dialogue line
+        yield return null;
     }
 
     //Since we don't want the player to do some stuff while he is talking we want to do this.
@@ -161,25 +182,8 @@ public class ChatterBoxManager : MonoBehaviour
         return currentStory;
     }
 
-    //TODO-Figure this out 
-    //This will be called from initiate dialouge if the couroutine is being run this will start and skip the couroutine
-    public void SkipWrittingText(InputAction.CallbackContext context)
+    private void SetPressedAgain(InputAction.CallbackContext context)
     {
-      StartCoroutine(SkipWritting());
-    }
-
-    private IEnumerator SkipWritting()
-    {
-        //If the player presses the key to continue the story again while it is being written it will skip the animation
-        if(isWrittingText)
-        {
-            chatterBoxText.text="";
-            chatterBoxText.text=currentStory.currentText;
-        }
-        else
-        {
-            yield return null;
-        }
-        yield return null;
+        pressedAgain=true;
     }
 }

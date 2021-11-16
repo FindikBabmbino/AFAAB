@@ -54,13 +54,12 @@ public class InitiateDialogue : MonoBehaviour
         {
             //This i keeps track of which one of them it is then it is passed into call trigger dialogue.
             int i=0;
-                     //We get the distance between each npc
+            //We get the distance between each npc
             Vector3 distance=transform.position-obj.gameObject.transform.position;
             float distanceSqrd=distance.sqrMagnitude;
             //If the distance matches the min distance we call the call trigger dialogue.
             if(distanceSqrd<=minDistanceToTalk&&!ChatterBoxManager.instance.ReturnPlayerIsInDialogue())
             {
-                minDistanceToTalk=distanceSqrd;
                 Debug.Log(i);
                 CallTriggerDialogue(i);
             }
@@ -68,7 +67,6 @@ public class InitiateDialogue : MonoBehaviour
             //If there is a choice we don't want the player to press e 
             if(ChatterBoxManager.instance.ReturnPlayerIsInDialogue()&&!UIManager.instance.ReturnisMakingAChoice())
             {
-                Debug.Log("In else if check");
                 ChatterBoxManager.instance.ContinueStory();
             }
             //This is so that it does not crash the game if it finds nothing
