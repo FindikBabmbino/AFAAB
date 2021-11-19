@@ -9,7 +9,7 @@
                     "name": "LookAround",
                     "type": "Value",
                     "id": "39cec816-2fab-4c78-8f5d-274cd4b1d74f",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
                 },
