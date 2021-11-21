@@ -19,7 +19,6 @@ public class ThirdPersonFollow : MonoBehaviour
     //This will be set in the start it will be set to minmax y
     [SerializeField]private float distanceOfTheCamera;
     [Header("Collision")]
-    [SerializeField]private float radiousOfSphereCast=10f;
     //This will change the distance of the camera based on if the camera is colliding with something
     [SerializeField]private Vector2 minMaxOfCamera=new Vector2(0.5f,10f);
     private Vector3 cameraDirection;
@@ -35,11 +34,6 @@ public class ThirdPersonFollow : MonoBehaviour
 
     private void Start()
     {
-        if(gimbel==null)
-        {
-            Debug.LogError("Missing the gimbel!");
-            return;
-        }
         dummyCamera=GameObject.Find("CameraDummy");
         followCamera=this.gameObject;
         gimbel=GameObject.Find("/Player/Gimbel");
@@ -65,19 +59,18 @@ public class ThirdPersonFollow : MonoBehaviour
         //These variables will hold the x and y values of the mouse 
         float pitch=0;
         float yaw=0;
-        //Clamp the pitch so the player can't do stupid angles 
         yaw+=playerInput.actions["LookAround"].ReadValue<Vector2>().x*mouseSensitivity;
         pitch-=playerInput.actions["LookAround"].ReadValue<Vector2>().y*mouseSensitivity;
-        pitch=Mathf.Clamp(pitch,pitchMinMax.x,pitchMinMax.y);
-     
         //I dont really know how this works this is from the old red cinder block project younger saynen was smarter
         //I mean when I look at it it is simple but how the hell was I able to think about this months ago>
+        //Clamp the pitch so the player can't do stupid angles--Does not work for some reason
+        pitch=Mathf.Clamp(pitch,pitchMinMax.x,pitchMinMax.y); 
         currentRotation = Vector3.SmoothDamp(currentRotation, new Vector3(pitch,yaw), ref rotationSmoothVelocity, rotationSmoothTime);
         followCamera.transform.eulerAngles+=currentRotation;
         followCamera.transform.position=gimbel.transform.position-followCamera.transform.forward*distanceOfTheCamera; 
         //This will match the follow of the camera with the dummy camera
         dummyCamera.transform.eulerAngles+=currentRotation;
-        dummyCamera.transform.localPosition=gimbel.transform.position-dummyCamera.transform.forward*minMaxOfCamera.y;               
+        dummyCamera.transform.localPosition=gimbel.transform.position-dummyCamera.transform.forward*minMaxOfCamera.y; 
     }
     
 
@@ -94,7 +87,6 @@ public class ThirdPersonFollow : MonoBehaviour
             //We clamp it to the hit distance of the ray
             float newDistance=Mathf.Clamp(hit.distance,minMaxOfCamera.x,minMaxOfCamera.y);
             distanceOfTheCamera=Mathf.Lerp(distanceOfTheCamera,newDistance,cameraDistanceLerpAmount*Time.deltaTime);
-            Debug.Log(cameraDirection.magnitude);
         }
         else
         {

@@ -87,8 +87,13 @@ public class PlayerMovementController : MonoBehaviour
             {
                 Debug.Log("in movedirection check");
                 //This makes the character look at the where they are going
-                //TODO-We clamp the x and z so the player does not rotate to weird angles
-                transform.localRotation=Quaternion.LookRotation(moveDirection,Vector3.up);
+                //TODO-We clamp the x and z so the player does not rotate to weird angles--DONE
+                //First create a quaternion that holds the lookrotation
+                Quaternion lookRotation=Quaternion.LookRotation(moveDirection);
+                //Then create a new quaternion taking the players normal eulerangles of x and z but take the euler angle of the quaternion that holds the lookrotation
+                Quaternion lookAtYAxis=Quaternion.Euler(transform.eulerAngles.x,lookRotation.eulerAngles.y,transform.eulerAngles.z);
+                //Then put it into the players rotation
+                transform.rotation=lookAtYAxis;
             }
             //Set the y to be zero to be sure 
             moveDirection.y=0;
