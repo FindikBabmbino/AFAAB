@@ -25,21 +25,24 @@ public class PlayerMovementController : MonoBehaviour
     //If this returns true we will change the players movement direction to this
     private bool isOnSlope;
     //Get the playermovement input system
-    private PlayerInput playerInput;
+    [SerializeField]private PlayerInput playerInput;
     private Rigidbody rigidBody;
     //This gets the last direction the player was heading this is used to decided where the player is going to dash.
     private Vector3 DashDirection; 
+    //This will hold the movement commands Vector2
+    private Vector2 movementVector2;
 
     private void Awake()
     {
-        //This sets the playerinput 
-        playerInput = GetComponent<PlayerInput>();
+  
         rigidBody=GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
     {
         //Subscribe to events when starting the script
+        //This sets the playerinput 
+        playerInput = GetComponent<PlayerInput>();
     }
 
     private void OnDisable()
@@ -57,15 +60,17 @@ public class PlayerMovementController : MonoBehaviour
     {
         //calculates the slope normal so that the player does not stick to it
         slopeMovementDirection=Vector3.ProjectOnPlane(moveDirection,slopeHit.normal);
+        //For some reason with the new update we have to get the input from the update and store it here before this we could just call the value of the vector 2 in the movement part 
+        movementVector2=playerInput.actions["Movement"].ReadValue<Vector2>();
     }
 
     void FixedUpdate()
     {
         //Does the calculation for the players movement
-        PlayerMovementCalculation();
+        PlayerMovementCalculation(movementVector2);
     }
 
-    void PlayerMovementCalculation()
+    void PlayerMovementCalculation(Vector2 var)
     {
         //For some reason the calculation of the player movement direction and adding the force has to be on the same function if not it does not work.
         //If this returns true we wont let the player move.
@@ -76,9 +81,9 @@ public class PlayerMovementController : MonoBehaviour
             return;
         }
         //we get the cameras right and forward vector to set where player is going head.
-          if(cameraTransform!=null)
+        if(cameraTransform!=null)
         {
-            Vector2 movementAxis=playerInput.actions["Movement"].ReadValue<Vector2>();
+            Vector2 movementAxis=var;
             moveDirection=new Vector3(movementAxis.x,0,movementAxis.y);
             moveDirection=moveDirection.x*cameraTransform.transform.right+moveDirection.z*cameraTransform.transform.forward;
             //We do a check if it is not 0 this is done so it does not reset the players rotation when the character does not move
@@ -95,13 +100,14 @@ public class PlayerMovementController : MonoBehaviour
                 //Then put it into the players rotation
                 transform.rotation=lookAtYAxis;
             }
-            //Set the y to be zero to be sure 
-            moveDirection.y=0;
         }
         else
         {
-            Debug.Log("warning the camera is missing");
+            Debug.Log("warning the camera is missing returning out of this function");
+            return;
         }
+        //Just to be sure set the movedirection.y to zero
+        moveDirection.y=0;
         // If the player is not on a slope use moveDirection.
         if(!OnSlope())
         {

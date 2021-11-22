@@ -26,7 +26,6 @@ public class DashSystem : MonoBehaviour
 
      private void Start()
      {
-        playerInput=GetComponent<PlayerInput>();
         rigidBody=GetComponent<Rigidbody>();
         cameraTransform=Camera.main.transform;
         defaultDashAmount=dashLimit;
@@ -35,6 +34,7 @@ public class DashSystem : MonoBehaviour
 
     private void OnEnable()
     {
+        playerInput=GetComponent<PlayerInput>();
         //Only bind if it is the player if we don't do this check we get errors let's try to avoid them as much as we can
         if(!isEnemy)
         {

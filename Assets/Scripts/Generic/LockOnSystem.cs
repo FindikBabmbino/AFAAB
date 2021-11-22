@@ -19,12 +19,12 @@ public class LockOnSystem : MonoBehaviour
     private void Start()
     {
         player=GameObject.FindObjectOfType<PlayerMovementController>().gameObject;
-        playerInput=GetComponent<PlayerInput>();
     }
 
     private void OnEnable()
     {
         //In here we subscribe to the lock on key so we can lock on to targets
+        playerInput=GetComponent<PlayerInput>();
         playerInput.actions["LockOn"].performed+=SetLockOnTrue;
         playerInput.actions["LockOn"].canceled+=SetLockOnFalse;
     }
