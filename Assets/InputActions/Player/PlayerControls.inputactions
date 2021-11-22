@@ -11,7 +11,8 @@
                     "id": "39cec816-2fab-4c78-8f5d-274cd4b1d74f",
                     "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Movement",
@@ -19,7 +20,8 @@
                     "id": "c2e3bd43-f6f2-44bf-b1e0-38c1a6297a4c",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "LockOn",
@@ -27,7 +29,8 @@
                     "id": "740defb4-c6c5-4724-9791-689494c18003",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Dash",
@@ -35,7 +38,8 @@
                     "id": "cbd850a5-ec44-4678-abd9-2a2f36aeeae2",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "SkipDialogue",
@@ -43,7 +47,8 @@
                     "id": "cb066ad5-5e77-4959-acb6-5007ee823c4a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Interact",
@@ -51,7 +56,8 @@
                     "id": "8476e532-23e1-47eb-b381-307a5b74370c",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -80,7 +86,7 @@
                 {
                     "name": "WASD",
                     "id": "74198da6-6389-46f7-8584-444760db7237",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -135,7 +141,7 @@
                 {
                     "name": "GamePad",
                     "id": "05430f4e-f2fb-49bd-b6ca-e9e0d3f9963f",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=2)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
