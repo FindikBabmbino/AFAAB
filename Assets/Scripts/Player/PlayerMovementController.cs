@@ -77,7 +77,6 @@ public class PlayerMovementController : MonoBehaviour
         //We also don't want the player to move if they are in a dialogue.
         if(GetComponent<DashSystem>().GetIsDashing()||ChatterBoxManager.instance.ReturnPlayerIsInDialogue())
         {
-            Debug.Log("called");
             return;
         }
         //we get the cameras right and forward vector to set where player is going head.
@@ -90,7 +89,6 @@ public class PlayerMovementController : MonoBehaviour
             //This check used to be moveDirection.x!=0&&moveDirection.y!=0&&moveDirection.z!=0 this is because it was the cinemachibe camera before
             if(moveDirection.x!=0&&moveDirection.z!=0)
             {
-                Debug.Log("in movedirection check");
                 //This makes the character look at the where they are going
                 //TODO-We clamp the x and z so the player does not rotate to weird angles--DONE
                 //First create a quaternion that holds the lookrotation

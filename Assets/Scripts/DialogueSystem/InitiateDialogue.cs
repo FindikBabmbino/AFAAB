@@ -19,7 +19,7 @@ public class InitiateDialogue : MonoBehaviour
    private void Start()
    {
        //We will only put the npcs that have a dialogue box in them
-       npcToTalkTo.Add(GameObject.FindObjectOfType<DialogueTrigger>());
+       npcToTalkTo.AddRange(GameObject.FindObjectsOfType<DialogueTrigger>());
    }
 
     //Sub on enable
@@ -49,32 +49,26 @@ public class InitiateDialogue : MonoBehaviour
     //This will calculate the closest object that the player can talk to and you can talk to that guy person
     private void CalculateDistance(InputAction.CallbackContext context)
     {
-        Debug.Log("In calculate distance");
-        foreach(var obj in npcToTalkTo)
+          
+        for (int i = 0; i <npcToTalkTo.Count; i++)
         {
-            //This i keeps track of which one of them it is then it is passed into call trigger dialogue.
-            int i=0;
+            Debug.Log(i);
             //We get the distance between each npc
-            Vector3 distance=transform.position-obj.gameObject.transform.position;
-            float distanceSqrd=distance.sqrMagnitude;
+            Vector3 distance = transform.position - npcToTalkTo[i].gameObject.transform.position;
+            float distanceSqrd = distance.magnitude;
+            Debug.Log(npcToTalkTo[i].gameObject.name + distanceSqrd);
             //If the distance matches the min distance we call the call trigger dialogue.
-            if(distanceSqrd<=minDistanceToTalk&&!ChatterBoxManager.instance.ReturnPlayerIsInDialogue())
+            if (distanceSqrd <= minDistanceToTalk && !ChatterBoxManager.instance.ReturnPlayerIsInDialogue())
             {
                 Debug.Log(i);
                 CallTriggerDialogue(i);
             }
             //If the player is already in a dialogue just continue the dialogue
             //If there is a choice we don't want the player to press e 
-            if(ChatterBoxManager.instance.ReturnPlayerIsInDialogue()&&!UIManager.instance.ReturnisMakingAChoice())
+            if (ChatterBoxManager.instance.ReturnPlayerIsInDialogue() && !UIManager.instance.ReturnisMakingAChoice())
             {
                 ChatterBoxManager.instance.ContinueStory();
             }
-            //This is so that it does not crash the game if it finds nothing
-            else
-            {
-                return;
-            }
-            i++;
         }
     }
 }
