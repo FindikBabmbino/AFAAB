@@ -14,7 +14,10 @@ public class FlySystem : MonoBehaviour
     private void Update()
     {
         //This calculate fly meter by dividing current with max
-        UIManager.instance.ModifyFlyAmount(currentFlyMeter/maxFlyMeter);
+        if(UIManager.instance!=null)
+        {
+             UIManager.instance.ModifyFlyAmount(currentFlyMeter/maxFlyMeter);
+        }
     }
     //This will be called from attack script to increase fly meter dependening on how much is passed into the function
     public void IncreaseFlyAmount(float var)
